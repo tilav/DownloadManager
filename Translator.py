@@ -1,4 +1,5 @@
-def rep(phrase):
+# Replacing greek characters with english ones
+def trans(phrase):
     translation = ""
     for i in phrase:
         if i in "αΑάΆ":

@@ -1,12 +1,16 @@
-from tkinter import Frame, Tk, Entry, Button, filedialog, messagebox, StringVar, ttk
+from message import TitleError, LinkError, FileError, EmptyFileError
+from tkinter import Frame, Tk, Entry, Button, filedialog, ttk
 from BackMain import download_files
-from Translator import rep
+from Translator import trans
 from pathlib import Path
+import sys
+import os
+
 
 root = Tk()
 root.geometry('400x240')
 root.eval('tk::PlaceWindow %s center' % root.winfo_toplevel())
-root.iconbitmap(r"Icon/wave.ico")
+# root.iconbitmap(r"Icon\wave.ico")
 root.resizable(0, 0)
 root.title("Download Manager")
 
@@ -26,8 +30,13 @@ def SearchWindow():
             s.insert(0, 'Please enter song name...')
 
     def searchbar():
-        search = rep(s.get())
-        return search
+        search = trans(s.get())
+        while True:
+            if(search == "Please enter song name...") or (sys.getsizeof(search) == 49):
+                TitleError()
+                break
+            else:
+                return search
 
     def filetypebar():
         ch = optionsbox.get()
@@ -56,11 +65,16 @@ def LinkWindow():
 
     def on_leave(e):
         if l.get() == '':
-            l.insert(0, 'Please enter song name...')
+            l.insert(0, 'Please enter song url...')
 
     def searchbar():
         search = l.get()
-        return search
+        while True:
+            if(search == "Please enter song url...") or (sys.getsizeof(search) == 49):
+                LinkError()
+                break
+            else:
+                return search
 
     def filetypebar():
         ch = optionsbox.get()
@@ -87,9 +101,15 @@ def CustomPlaylist():
 
     def openfile():
         c.songlist = filedialog.askopenfilename()
-        p = Path(c.songlist)
-        c.directory = p.parent
-        return c.directory
+        if (c.songlist.endswith(".txt")):
+            if (os.path.getsize(c.songlist) == 0):
+                EmptyFileError()
+            else:
+                p = Path(c.songlist)
+                c.directory = p.parent
+                return c.directory
+        else:
+            FileError()
 
     def filetypebar():
         ch = optionsbox.get()

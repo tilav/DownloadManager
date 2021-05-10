@@ -1,7 +1,3 @@
-- New file for checkpoint
+- YouTube video
 
-- Add comments
-
-- Add all file to a single one to export .exe
-
-
+- Final report
